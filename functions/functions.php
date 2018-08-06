@@ -3,23 +3,22 @@ require_once 'connect.php';
 
 function getNews($limit, $id)
 {
-    global $mysqli;
+    global $db;
     connectDB();
-    if ($id)
-        $where = "WHERE `id` = ". $id;
-    $result = $mysqli->query("SELECT * FROM `news`$where ORDER BY `id` DESC LIMIT $limit");
+    $where = $id ? "WHERE `id` = " . $id : "";
+    $result = $db->query("SELECT * FROM news $where ORDER BY id DESC LIMIT $limit");
 
     closeDB();
     if (!$id)
         return resultToArray($result);
     else
-        return $result->fetch_assoc();
+        return $result->fetchArray();
 }
 
 function resultToArray($result)
 {
     $array = array();
-    while (($row = $result->fetch_assoc()) != false)
+    while ($row = $result->fetchArray())
         $array[] = $row;
     return $array;
 }

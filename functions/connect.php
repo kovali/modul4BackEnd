@@ -1,14 +1,20 @@
 <?php
-$mysqli = false;
+$db = false;
 function connectDB()
 {
-    global $mysqli;
-    $mysqli = new mysqli('localhost', 'root', '', 'test1base');
-    $mysqli->query("SET NAMES 'utf-8'");
+    global $db;
+    $db = new SQLite3('news.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+    $db->query("
+      CREATE TABLE IF NOT EXISTS news (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        title VARCHAR NOT NULL,
+        intro_text VARCHAR NOT NULL,
+        full_text VARCHAR NOT NULL
+      )
+    ");
 }
 
 function closeDB()
 {
-    global $mysqli;
-    $mysqli->close();
+    // no-op
 }
